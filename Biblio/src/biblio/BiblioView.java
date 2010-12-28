@@ -794,7 +794,7 @@ public class BiblioView extends FrameView  {
         @Override
         public void valueChanged(final ListSelectionEvent event) {
             int selRow = ((DefaultListSelectionModel) event.getSource()).getAnchorSelectionIndex();
-            if(selRow > 0){
+            if(selRow >= 0){
             final Book book = ((BookTableModel) booksTable.getModel()).getColumnBook(selRow);
             final String s = book.getAuthor().split(" ")[0].replace(" ", "_") + "_" + book.getAuthor().split(" ")[1].replace(" ", "_");
 
