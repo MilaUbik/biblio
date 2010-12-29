@@ -26,7 +26,7 @@ import org.loftjob.model.Book;
  */
 public class Engine {
 
-    private static String defaultPath = "data";
+    private static String defaultPath = Engine.getFolderLibrary();
 
     /**
      * Save new book created from WebService to a file
