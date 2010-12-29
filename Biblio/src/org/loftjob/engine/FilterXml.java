@@ -24,7 +24,7 @@ public class FilterXml implements FileFilter {
 	 */
 	@Override
 	public boolean accept(File pathname) {
-		if(pathname.getPath().contains(".xml"))
+		if(pathname.getPath().trim().equalsIgnoreCase(".xml"))
 		return true;
 		else return false;
 	}
