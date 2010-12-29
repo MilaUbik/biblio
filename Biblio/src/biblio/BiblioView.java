@@ -59,7 +59,7 @@ import org.mozilla.browser.MozillaPanel;
  */
 public class BiblioView extends FrameView  {
 
-    private String DATA = Engine.getFolderLibrary();
+    private String data = Engine.getFolderLibrary();
 
     public BiblioView(SingleFrameApplication app) {        
         super(app);
@@ -67,7 +67,7 @@ public class BiblioView extends FrameView  {
         try {
             FileInputStream reader = new FileInputStream(new File("BiblioOp.properties"));
             prop.load(reader);
-            DATA = (String) prop.get(DATA);
+            data = (String) prop.get("data");
         } catch (IOException ex) {
             Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -150,7 +150,7 @@ public class BiblioView extends FrameView  {
     private void initData() {
         that = this;
         try {
-            bookList = Engine.readFromFile(DATA);
+            bookList = Engine.readFromFile(data);
             int i = 0;
             Set<Book> surname = new TreeSet<Book>();
             for (int x = 0; x < bookList.size(); x++) {
@@ -163,7 +163,7 @@ public class BiblioView extends FrameView  {
             Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        final TimerTask task = new DirWatcher(DATA, "") {
+        final TimerTask task = new DirWatcher(data, "") {
 
             @Override
             protected void onChange(File file2, String action2) {
@@ -179,7 +179,7 @@ public class BiblioView extends FrameView  {
                                 //$NON-NLS-1$
                                 System.out.println("file add"); //$NON-NLS-1$
                                 //read from folder all book
-                                bookList = Engine.readFromFile(DATA);
+                                bookList = Engine.readFromFile(data);
                                 DefaultTreeModel modelTree = (DefaultTreeModel) authors.getModel();
                                 DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelTree.getRoot();
                                 DefaultMutableTreeNode[] newBook = new DefaultMutableTreeNode[authorList.length];
