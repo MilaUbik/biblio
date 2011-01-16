@@ -52,23 +52,25 @@ public abstract class DirWatcher extends TimerTask {
 
 				// scan the files and check for modification/addition
 				for (i = 0; i < filesArray.length; i++) {
-					Long current = (Long) dir.get(filesArray[i]);
-					checkedFiles.add(filesArray[i]);
-					if (current == null) {
-						// new file
-						dir.put(filesArray[i], new Long(filesArray[i]
-								.lastModified()));
-						onChange(filesArray[i], "add"); //$NON-NLS-1$
-					}
-					// } else if (current.longValue() !=
-					// filesArray[i].lastModified()) {
-					// // modified file
-					// dir.put(filesArray[i], new
-					// Long(filesArray[i].lastModified()));
-					// onChange(filesArray[i], "add");
-					// }
-				}
-			}
+                                    Long current = (Long) dir.get(filesArray[i]);
+                                    String path = filesArray[i].getPath();
+                                    String[] file = path.split("/");
+                                    String ext[] = file[file.length - 1].split("\\.");
+                                    if (ext.length == 2 && (ext[1].equals("xml") || ext[1].equals("jpeg"))) {
+                                         checkedFiles.add(filesArray[i]);
+                                        if (current == null) {
+                                            // new file
+                                            dir.put(filesArray[i], new Long(filesArray[i].lastModified()));
+                                            onChange(filesArray[i], "add"); //$NON-NLS-1$
+
+                                        } else if (current != filesArray[i].lastModified()) {
+                                            // modified file
+                                            dir.put(filesArray[i], new Long(filesArray[i].lastModified()));
+                                            onChange(filesArray[i], "add");
+                                        }
+                                    }
+                                    } 
+                                }
 		}
 		// now check for deleted files
 		Set ref = ((HashMap) dir.clone()).keySet();
