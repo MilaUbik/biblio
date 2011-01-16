@@ -24,9 +24,17 @@ public class FilterXml implements FileFilter {
 	 */
 	@Override
 	public boolean accept(File pathname) {
-		if(pathname.getPath().trim().equalsIgnoreCase(".xml"))
-		return true;
-		else return false;
+            String path = pathname.getPath();
+            String[] file = path.split("/");
+            String ext[] = file[file.length-1].split("\\.");
+		if(ext.length == 2 && ext[1].equals("xml")){
+                    System.out.println(ext[0]+" true");
+                    return true;
+                }
+		else {
+                System.out.println(ext[0]+" false");
+                return false;
 	}
+        }
 
 }
