@@ -158,15 +158,13 @@ public class Gui extends Thread implements ActionListener {
 						file);
 				imageOutput.write(b, 0, b.length);
 				imageOutput.close();
-
-				// URI uri = new File("prova.jpg").toURI();
-
-				try {
+                                try {
 					BufferedImage image = ImageIO.read(uri.toURL());
 					if (image == null) {
 						System.err.println(uri.toString()
 								+ ": Could not load image");
 					}
+                                        else{
 					MonochromeBitmapSource source = new BufferedImageMonochromeBitmapSource(
 							image);
 					Result result = new MultiFormatReader().decode(source);
@@ -176,6 +174,7 @@ public class Gui extends Thread implements ActionListener {
 					book = new BookSearch(null,parsedResult.getDisplayResult(),path, f);
 					file.delete();
 					fg.startCapture();
+                                        }
 				} catch (ReaderException e1) {
 					System.out.println(uri.toString() + ": No barcode found");
 					if (!f.isVisible()) {
