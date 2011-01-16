@@ -3,6 +3,7 @@
  */
 package biblio;
 
+import java.net.MalformedURLException;
 import org.loftjob.model.BookTableModel;
 import org.loftjob.model.Picture;
 import be.pwnt.jflow.event.ShapeEvent;
@@ -132,8 +133,25 @@ public class BiblioView extends FrameView  {
             }
         });
         authors.setSelectionRow(0);
-        booksTable.getSelectionModel().setLeadSelectionIndex(1);
-        // bookDetail.setData(((BookTableModel)booksTable.getModel()).getColumnBook(0));
+        booksTable.getSelectionModel().setLeadSelectionIndex(0);
+        Book book = ((BookTableModel)booksTable.getModel()).getColumnBook(0);
+        bookDetail.setData(book);
+        String s = book.getAuthor().replaceAll(" ", "_");
+         String url = "http://it.wikipedia.org/wiki/".replace("it", Locale.getDefault().getLanguage()) + s;
+        URL helpURL;
+        try {
+            helpURL = new URL(url);
+            if (helpURL == null) {
+                        System.err.println("Couldn't open help file: " + url);
+                    } else {
+                        //   System.out.println("Help URL is " + helpURL);
+                        p.load(url);
+
+                    }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Action
@@ -793,7 +811,7 @@ public class BiblioView extends FrameView  {
 
         @Override
         public void valueChanged(final ListSelectionEvent event) {
-            int selRow = ((DefaultListSelectionModel) event.getSource()).getAnchorSelectionIndex();
+            final int selRow = ((DefaultListSelectionModel) event.getSource()).getAnchorSelectionIndex();
             if(selRow >= 0){
             final Book book = ((BookTableModel) booksTable.getModel()).getColumnBook(selRow);
             final String s = book.getAuthor().split(" ")[0].replace(" ", "_") + "_" + book.getAuthor().split(" ")[1].replace(" ", "_");
@@ -809,6 +827,8 @@ public class BiblioView extends FrameView  {
 
                 @Override
                 protected Object doInBackground() throws Exception {
+                    Book book = ((BookTableModel) booksTable.getModel()).getColumnBook(selRow);
+                    String s = book.getAuthor().replaceAll(" ", "_");
                     String url = "http://it.wikipedia.org/wiki/".replace("it", Locale.getDefault().getLanguage()) + s;
                     URL helpURL = new URL(url);
                     if (helpURL == null) {
