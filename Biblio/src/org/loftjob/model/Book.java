@@ -48,7 +48,9 @@ public class Book implements Comparable<Object> {
 	 */
 	public Book(String author, String publisher, String title,
 			String yearEd, String cover, String description, String isbn) {
-		this.author = author;
+                author = author.replace(".", " ");
+               // title = title.replace(".", " ");
+                this.author = author;
 		this.publisher = publisher;
 		this.title = title;
 		this.yearEd = yearEd;
@@ -59,12 +61,14 @@ public class Book implements Comparable<Object> {
 
 	public Book(Book book) {
 		this.author = book.getAuthor();
+                this.author = author.replace(".", " ");
 		this.publisher = book.getPublisher();
 		this.title = book.getTitle();
 		this.yearEd = book.getYearEd();
 		this.cover = book.getCover();
 		this.description = book.getDescription();
-                 this.isbn = book.getIsbn();
+                this.isbn = book.getIsbn();
+                //this.title = title.replace(".", " ");
 	}
 
 
@@ -74,6 +78,7 @@ public class Book implements Comparable<Object> {
 
     public void setAuthor(String author) {
         this.author = author;
+        this.author = author.replace(".", " ");
     }
 
     public String getCover() {
