@@ -12,24 +12,18 @@
 package biblio;
 
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import org.loftjob.engine.Engine;
 import org.loftjob.model.Book;
 
 /**
@@ -39,10 +33,21 @@ import org.loftjob.model.Book;
 public class BookDetail extends javax.swing.JPanel {
 
     private Book book;
+    private String data = Engine.getFolderLibrary();
+    private String tmpImage;
 
     /** Creates new form BookDetail */
     public BookDetail() {
         super();
+        Properties prop = new Properties();
+        try {
+            FileInputStream reader = new FileInputStream(new File("BiblioOp.properties"));
+            prop.load(reader);
+            data = (String) prop.get("data");
+            tmpImage = (String) prop.get("tmpImage");
+        } catch (IOException ex) {
+            Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.book = new Book();
         initComponents();
         this.setData(book);
@@ -237,32 +242,24 @@ public class BookDetail extends javax.swing.JPanel {
             jLabel10.setText(this.book.getYearEd());
             jLabel11.setText(this.book.getIsbn());
             jEditorPane1.setText(book.getDescription());
-            ImageIcon image = new ImageIcon(new URL("file://" + new File(book.getCover().trim()).getAbsolutePath()));
+            Image image = ImageIO.read(new URL("file://" + new File(this.book.getCover().trim()).getAbsolutePath()));
             if (image != null && this.getWidth() != 0 && this.getHeight() != 0) {
-                Image tmp = getScaledImage(image.getImage(), 200, 400);
-                image = new ImageIcon(tmp);
-                jLabel1.setIcon(image);
+                Image tmp = image.getScaledInstance(200, 400, Image.SCALE_DEFAULT);
+                ImageIcon imageIcon = new ImageIcon(tmp);
+                jLabel1.setIcon(imageIcon);
             } else {
-                jLabel1.setIcon(image);
+                image = ImageIO.read(new URL("file://" + data + File.separator + tmpImage));
+                ImageIcon imageIcon = new ImageIcon(image);
+                jLabel1.setIcon(imageIcon);
             }
-        } catch (MalformedURLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(BookDetail.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     public Book getData(Book book) {
         return this.book;
     }
-
-    private Image getScaledImage(Image srcImg, int w, int h) {
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
-        g2.dispose();
-        return resizedImg;
-    }
-
 
     public void setjEditorPane1Desc(String url) {
         try {
