@@ -37,6 +37,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JOptionPane;
 import org.loftjob.engine.Engine;
 
@@ -146,7 +147,7 @@ public class Gui extends Thread implements ActionListener {
 		byte[] b = null;
 		try {
 			while (!stop) {
-				File file = File.createTempFile("prova.jpg", null);
+				File file = new File("tmp.jpg");
 				file.deleteOnExit();
 				URI uri = file.toURI();
 				bb = fg.getFrame();
@@ -159,7 +160,8 @@ public class Gui extends Thread implements ActionListener {
 				imageOutput.write(b, 0, b.length);
 				imageOutput.close();
                                 try {
-					BufferedImage image = ImageIO.read(uri.toURL());
+                                        FileImageInputStream imageInput = new FileImageInputStream(file);
+					BufferedImage image = ImageIO.read(imageInput);
 					if (image == null) {
 						System.err.println(uri.toString()
 								+ ": Could not load image");
