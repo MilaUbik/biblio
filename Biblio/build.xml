@@ -72,4 +72,57 @@
     nbproject/build-impl.xml file. 
 
     -->
+
+ <!--+
+        | Prepares the distribution files
+        +-->
+    <target name="prepare-dist"  description="Prepares the distribution">
+
+        <copy todir="dist" filtering="on">
+            <fileset dir=".">
+            	<include name="*.sh"/>
+                <include name="*.properties"/>
+                <include name="gpl.txt"/>
+                <include name="libv4l4j.so"/>
+            </fileset>
+        </copy>
+
+        <copy todir="dist/${src.dir}" filtering="on">
+            <fileset dir="${src.dir}">
+            </fileset>
+        </copy>
+
+        <copy todir="${dist.dir}/${src.dir}" filtering="off">
+            <fileset dir="${src.dir}">
+            </fileset>
+        </copy>
+
+        <fixcrlf srcdir="dist" includes="*.sh" eol="lf"/>
+
+    </target>
+
+    <!--+
+        | Creates the distribution archive
+        +-->
+    <target name="dist" depends="prepare-dist" description="Creates the distribution">
+   	    <tar tarfile="dist/${ant.project.name}.tar" basedir="dist">
+  	         <tarfileset dir="dist">
+  	             <include name="dist/*.*"/>
+                     <exclude name="src"/>
+  	         </tarfileset>
+  	         <tarfileset dir="dist" mode="755">
+  	             <include name="dist/../Biblio.sh"/>
+  	         </tarfileset>
+  	    </tar>
+  	    <gzip zipfile="dist/${ant.project.name}.tgz" src="dist/${ant.project.name}.tar"/>
+  	    <delete file="dist/${ant.project.name}.tar"/>
+    </target>
+    <target description="bundle sources in a jar" name="package-sources">
+  <jar basedir="src" destfile="dist/${ant.project.name}-sources.jar"/>
+</target>
+<target depends="-javadoc-build" description="bundle javadoc in a jar" name="package-doc">
+  <jar basedir="dist/javadoc" destfile="dist/${ant.project.name}-javadoc.jar"/>
+</target>
+<target name="-post-jar" depends="package-sources, package-doc, prepare-dist, dist" />
+
 </project>
