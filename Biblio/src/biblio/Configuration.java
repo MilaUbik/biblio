@@ -47,7 +47,7 @@ public class Configuration extends be.pwnt.jflow.Configuration {
             try {
                 reader = new FileInputStream(new File("BiblioOp.properties"));
                 prop.load(reader);
-                data = (String) prop.get(data);
+                data = (String) prop.get("data");
                 String tmpImage =(String) prop.get("tmpImage");
                 Book book = new Book();
                 book.setCover(data+File.separator+tmpImage);
