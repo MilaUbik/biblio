@@ -98,7 +98,10 @@
         </copy>
 
         <fixcrlf srcdir="dist" includes="*.sh" eol="lf"/>
-
+        <mkdir dir="dist/data" ></mkdir>
+        <copy todir="dist/data">
+            <fileset file="dist/../data/tmpImage.jpg"></fileset>
+        </copy>
     </target>
 
     <!--+
