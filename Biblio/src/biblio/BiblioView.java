@@ -145,26 +145,28 @@ public class BiblioView extends FrameView  {
                 }
             }
         });
-        authors.setSelectionRow(0);
-        booksTable.getSelectionModel().setLeadSelectionIndex(0);
-        Book book = ((BookTableModel)booksTable.getModel()).getColumnBook(0);
-        bookDetail.setData(book);
-        String s = book.getAuthor().replaceAll(" ", "_");
-         String url = "http://it.wikipedia.org/wiki/".replace("it", Locale.getDefault().getLanguage()) + s;
-        URL helpURL;
-        try {
-            helpURL = new URL(url);
-            if (helpURL == null) {
-                        System.err.println("Couldn't open help file: " + url);
-                    } else {
-                        //   System.out.println("Help URL is " + helpURL);
-                        p.load(url);
+        BookTableModel model = (BookTableModel)booksTable.getModel();
+        if (model.getRowCount() > 0) {
+            authors.setSelectionRow(0);
+            booksTable.getSelectionModel().setLeadSelectionIndex(0);
+            Book book = model.getColumnBook(0);
+            bookDetail.setData(book);
+            String s = book.getAuthor().replaceAll(" ", "_");
+            String url = "http://it.wikipedia.org/wiki/".replace("it", Locale.getDefault().getLanguage()) + s;
+            URL helpURL;
+            try {
+                helpURL = new URL(url);
+                if (helpURL == null) {
+                    System.err.println("Couldn't open help file: " + url);
+                } else {
+                    //   System.out.println("Help URL is " + helpURL);
+                    p.load(url);
 
-                    }
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     @Action
