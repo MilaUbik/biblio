@@ -253,7 +253,7 @@ public class BookDetail extends javax.swing.JPanel {
                 ImageIcon imageIcon = new ImageIcon(tmp);
                 jLabel1.setIcon(imageIcon);
             } else {
-                image = ImageIO.read(new URL("file://" + data + File.separator + tmpImage));
+                image = ImageIO.read(new URL("file://" +  new File(data + File.separator + tmpImage).getAbsolutePath()));
                 ImageIcon imageIcon = new ImageIcon(image);
                 jLabel1.setIcon(imageIcon);
             }
