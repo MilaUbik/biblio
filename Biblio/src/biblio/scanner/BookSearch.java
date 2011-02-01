@@ -55,7 +55,6 @@ public class BookSearch {
     private String path = Engine.getFolderLibrary();
     private Book book = new Book();
     private URL root;
-    private CoverSearch coverSearch;
     private String isbn = "";
 
     public BookSearch(Component parent, String isbn, String path, JFrame frame) {
@@ -97,15 +96,7 @@ public class BookSearch {
                         System.out.println(link + "\t");
                         root = new URL(link.getHref());
                     }
-                    //
-                    //Fare un metodo in util che riceve IMAGE e la salva
-
                     this.book = createBook(entryBook);
-                    Engine.createFromWS(this.book);
-                    if (root != null) {
-                        this.book.setCover(Util.saveImage(this.book, link));
-                        Engine.createFromWS(this.book);
-                    }
                 } else {
                     JOptionPane.showMessageDialog(frame, "Nessuno libro trovato.", "Message", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -136,11 +127,35 @@ public class BookSearch {
         if (entry.getDates().size() != 0) {
             book.setYearEd(entry.getDates().get(0).getValue().trim());
         }
-        if (imageFile != null) {
-            book.setCover(imageFile.getAbsolutePath().trim());
-        }
         if (entry.getDescriptions().size() != 0) {
             book.setDescription(entry.getDescriptions().get(0).getValue());
+        }
+        if (root != null) {
+            InputStream inStream = null;
+            try {
+                Link link = new Link();
+                link.setHref(root.toString());
+                ServiceSingleton service = ServiceSingleton.getServiceSingleton();
+                inStream = service.getStreamFromLink(link);
+                Image input = ImageIO.read(inStream);
+                if (input != null) {
+                    BufferedImage buff = new BufferedImage(input.getWidth(null), input.getHeight(null), BufferedImage.TYPE_INT_RGB);
+                    buff.getGraphics().drawImage(input, 0, 0, null);
+                    imageFile = File.createTempFile("coverTmp", ".jpg");
+                    ImageIO.write(buff, "jpg", imageFile);
+                    book.setCover(imageFile.getAbsolutePath());
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(BookSearch.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ServiceException ex) {
+                Logger.getLogger(BookSearch.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    inStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(BookSearch.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         book.setIsbn(this.isbn);
         return book;
