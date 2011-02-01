@@ -145,6 +145,7 @@ public class Util {
             Logger.getLogger(BiblioView.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
+            if(url != null && url.getPath().length() != 0){
             URLConnection uc = url.openConnection();
             uc.setRequestProperty("User-Agent", "Mozilla/4.5");
             stream = uc.getInputStream();
@@ -161,6 +162,7 @@ public class Util {
             File imageFile = new File(dirImg + File.separator + book.getTitle().trim() + ".jpeg");
             ImageIO.write(bufferedImage, "jpeg", imageFile);
             book.setCover(path + File.separator + book.getAuthor().trim().replace(" ", "_") + File.separator + "cover" + File.separator + book.getTitle().trim() + ".jpeg");
+            }
             Engine.createFromWS(book);
         } catch (IOException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
