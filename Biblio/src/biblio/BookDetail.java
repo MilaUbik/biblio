@@ -262,7 +262,7 @@ public class BookDetail extends javax.swing.JPanel {
         } 
     }
 
-    public Book getData(Book book) {
+    public Book getData() {
         return this.book;
     }
 
