@@ -78,7 +78,7 @@ import org.loftjob.model.Book;
  */
 public class Gui extends Thread implements ActionListener {
 
-    private JFrame f;
+    private ScannerView f;
     private JLabel l;
     private JLabel cover;
     private FrameGrabber fg;
@@ -88,6 +88,7 @@ public class Gui extends Thread implements ActionListener {
     private JFrame shell = new JFrame();
     private Book book = new Book();
     private JTextArea bookDetails = new JTextArea(book.toString(), 200, 300);
+    private ImageIcon icon;
 
 
     public Gui() {
@@ -105,105 +106,124 @@ public class Gui extends Thread implements ActionListener {
         int h = Integer.parseInt((String) prop.get("camH"));
         int std = V4L4JConstants.STANDARD_WEBCAM, channel = 0, qty = 60;
         initFrameGrabber(dev, w, h, std, channel, qty);
+        f = new ScannerView();
         this.start();
         if (!stop) {
-            try {
-                f = new JFrame("Scanner");
-                GridBagLayout layout = new GridBagLayout();
-                f.setLayout(layout);
-                ImageIcon icon = new ImageIcon(new File(path + File.separator + tmpImage).toURI().toURL());
-                Image imageTmp = icon.getImage().getScaledInstance(100, 300, Image.SCALE_DEFAULT);
-                icon = new ImageIcon(imageTmp);
-                l = new JLabel();
-                l.setMinimumSize(new Dimension(300, 400));
-                GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 0;
-                gridBagConstraints.gridy = 0;
-                gridBagConstraints.gridheight = 2;
-                gridBagConstraints.gridwidth = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                 gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-                f.add(l, gridBagConstraints);
-                cover = new JLabel();
-                cover.setMinimumSize(new Dimension(100, 300));
-                cover.setIcon(icon);
-                gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 1;
-                gridBagConstraints.gridy = 0;
-                gridBagConstraints.gridwidth = 1;
-                gridBagConstraints.gridheight = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-                f.add(cover, gridBagConstraints);
-                gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 1;
-                gridBagConstraints.gridy = 1;
-                gridBagConstraints.gridwidth = 1;
-                gridBagConstraints.gridheight = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-                Button save = new Button("Save");
-                save.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (book.getCover() != null) {
-                            try {
-                                Util.saveImage(book, new URL("file://" + book.getCover()));
-                            } catch (MalformedURLException ex) {
-                                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                });
-                save.setMinimumSize(new Dimension(100, 30));
-                f.add(save, gridBagConstraints);
-                gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 2;
-                gridBagConstraints.gridy = 0;
-                gridBagConstraints.gridwidth = 2;
-                gridBagConstraints.gridheight = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
-                bookDetails.setMinimumSize(new Dimension(200, 300));
-                JScrollPane scrollDetails = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                scrollDetails.setViewportView(bookDetails);
-                f.add(scrollDetails, gridBagConstraints);
-                gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 2;
-                gridBagConstraints.gridy = 1;
-                gridBagConstraints.gridwidth = 1;
-                gridBagConstraints.gridheight = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-                Button exit = new Button("Exit");
-                exit.setMinimumSize(new Dimension(100, 30));
-                f.add(exit, gridBagConstraints);
-                gridBagConstraints = new java.awt.GridBagConstraints();
-                gridBagConstraints.gridx = 3;
-                gridBagConstraints.gridy = 1;
-                gridBagConstraints.gridwidth = 1;
-                gridBagConstraints.gridheight = 1;
-                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
-                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-                Button cancel = new Button("Cancel");
-                cancel.setMinimumSize(new Dimension(100, 30));
-                f.add(cancel, gridBagConstraints);
-                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                f.setMinimumSize(new Dimension(600, 400));
-                //f.setResizable(false);
-                f.pack();
+//            try {
+                
+                f.setTitle("Scanner");
+//                GridBagLayout layout = new GridBagLayout();
+//                f.setLayout(layout);
+//                 icon = new ImageIcon(new File(path + File.separator + tmpImage).toURI().toURL());
+//                Image imageTmp = icon.getImage().getScaledInstance(100, 300, Image.SCALE_DEFAULT);
+//                icon = new ImageIcon(imageTmp);
+//                l = new JLabel();
+//                l.setMinimumSize(new Dimension(300, 400));
+//                GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 0;
+//                gridBagConstraints.gridy = 0;
+//                gridBagConstraints.gridheight = 2;
+//                gridBagConstraints.gridwidth = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                 gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+//                f.add(l, gridBagConstraints);
+//                cover = new JLabel();
+//                cover.setMinimumSize(new Dimension(100, 300));
+//                cover.setIcon(icon);
+//                gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 1;
+//                gridBagConstraints.gridy = 0;
+//                gridBagConstraints.gridwidth = 1;
+//                gridBagConstraints.gridheight = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+//                f.add(cover, gridBagConstraints);
+//                gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 1;
+//                gridBagConstraints.gridy = 1;
+//                gridBagConstraints.gridwidth = 1;
+//                gridBagConstraints.gridheight = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+//                Button save = new Button("Save");
+//                save.addActionListener(new ActionListener() {
+//
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        if (book.getCover() != null) {
+//                            try {
+//                                Util.saveImage(book, new URL("file://" + book.getCover()));
+//                            } catch (MalformedURLException ex) {
+//                                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                    }
+//                });
+//                save.setMinimumSize(new Dimension(100, 30));
+//                f.add(save, gridBagConstraints);
+//                gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 2;
+//                gridBagConstraints.gridy = 0;
+//                gridBagConstraints.gridwidth = 2;
+//                gridBagConstraints.gridheight = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+//                bookDetails.setMinimumSize(new Dimension(200, 300));
+//                JScrollPane scrollDetails = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//                scrollDetails.setViewportView(bookDetails);
+//                f.add(scrollDetails, gridBagConstraints);
+//                gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 2;
+//                gridBagConstraints.gridy = 1;
+//                gridBagConstraints.gridwidth = 1;
+//                gridBagConstraints.gridheight = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+//                Button exit = new Button("Exit");
+//                exit.addActionListener(new ActionListener() {
+//
+//                    @Override
+//                    public void actionPerformed(ActionEvent ae) {
+//                        f.dispose();
+//                    }
+//                });
+//                exit.setMinimumSize(new Dimension(100, 30));
+//                f.add(exit, gridBagConstraints);
+//                gridBagConstraints = new java.awt.GridBagConstraints();
+//                gridBagConstraints.gridx = 3;
+//                gridBagConstraints.gridy = 1;
+//                gridBagConstraints.gridwidth = 1;
+//                gridBagConstraints.gridheight = 1;
+//                gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+//                gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//                gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+//                Button cancel = new Button("Cancel");
+//                cancel.addActionListener(new ActionListener() {
+//
+//                    @Override
+//                    public void actionPerformed(ActionEvent ae) {
+//                        cover.setIcon(icon);
+//                        bookDetails.selectAll();
+//                        bookDetails.cut();
+//                        bookDetails.setText(new Book().toString());
+//                    }
+//                });
+//                cancel.setMinimumSize(new Dimension(100, 30));
+//                f.add(cancel, gridBagConstraints);
+//                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//                f.setMinimumSize(new Dimension(600, 400));
+//                //f.setResizable(false);
+//                f.pack();
                 BiblioApp.getApplication().show(f);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            } catch (MalformedURLException ex) {
+//                Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
         }
     }
@@ -246,16 +266,16 @@ public class Gui extends Thread implements ActionListener {
      *
      * @param b
      */
-    public void setImage(byte[] b) {
+    public synchronized void setImage(byte[] b) {
         try {
-            l.setIcon(new ImageIcon(new ImageIcon(b).getImage().getScaledInstance(300, 400, Image.SCALE_DEFAULT)));
+            f.setScanner(new ImageIcon(new ImageIcon(b).getImage().getScaledInstance(300, 400,Image.SCALE_DEFAULT)));
         } catch (NullPointerException e) {
             // TODO: handle exception
             fg.stopCapture();
             vd.releaseFrameGrabber();
             vd.release();
             stop = true;
-            f.dispose();
+         //   f.dispose();
         }
     }
 
@@ -298,28 +318,23 @@ public class Gui extends Thread implements ActionListener {
                         final ParsedResult parsedResult = ResultParser.parseResult(result);
                         fg.stopCapture();
                         BookSearch bookSearch = new BookSearch(null, parsedResult.getDisplayResult(), path, f);
-                        bookDetails.selectAll();
-                        bookDetails.cut();
-                        bookDetails.setText(bookSearch.getBook().toString());
-                        Image imageCover = ImageIO.read(new URL("file://" + new File(bookSearch.getBook().getCover().trim()).getAbsolutePath()));
-                        if (imageCover != null) {
-                            Image tmp = imageCover.getScaledInstance(100, 300, Image.SCALE_DEFAULT);
-                            ImageIcon imageIcon = new ImageIcon(tmp);
-                            cover.setIcon(imageIcon);
-                        }
+                        f.setBook(bookSearch.getBook());
+//                        bookDetails.selectAll();
+//                        bookDetails.cut();
+//                        bookDetails.setText(bookSearch.getBook().toString());
+//                        Image imageCover = ImageIO.read(new URL("file://" + new File(bookSearch.getBook().getCover().trim()).getAbsolutePath()));
+//                        if (imageCover != null) {
+//                            Image tmp = imageCover.getScaledInstance(100, 300, Image.SCALE_DEFAULT);
+//                            ImageIcon imageIcon = new ImageIcon(tmp);
+//                            cover.setIcon(imageIcon);
+//                        }
                         file.delete();
                         fg.startCapture();
                     }
                 } catch (ReaderException e1) {
                     System.out.println(uri.toString() + ": No barcode found");
-                    if (!f.isVisible()) {
-                        file.delete();
-                        fg.stopCapture();
-                        vd.releaseFrameGrabber();
-                        vd.release();
-                        stop = true;
-                    }
-                } catch (MalformedURLException e2) {
+                 }
+                catch (MalformedURLException e2) {
                     // TODO Auto-generated catch block
                     e2.printStackTrace();
                 } catch (IOException e3) {
@@ -329,10 +344,16 @@ public class Gui extends Thread implements ActionListener {
                     stop = true;
                     f.dispose();
                 }
+                finally{
+                     if (!f.isVisible()) {
+                        file.delete();
+                        fg.stopCapture();
+                        vd.releaseFrameGrabber();
+                        vd.release();
+                        stop = true;
+                     }
+                }
             }
-            // actionPerformed(new ActionEvent(f, 0, null));
-
-            // windowClosing(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
         } catch (V4L4JException e) {
             e.printStackTrace();
             System.out.println("Failed to capture image");
