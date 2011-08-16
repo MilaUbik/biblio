@@ -160,10 +160,10 @@ public class Util {
                 dirImg.mkdir();
             }
             File imageFile = new File(dirImg + File.separator + book.getTitle().trim() + ".jpeg");
-            ImageIO.write(bufferedImage, "jpeg", imageFile);
             book.setCover(path + File.separator + book.getAuthor().trim().replace(" ", "_") + File.separator + "cover" + File.separator + book.getTitle().trim() + ".jpeg");
-            }
             Engine.createFromWS(book);
+            ImageIO.write(bufferedImage, "jpeg", imageFile);
+            }
         } catch (IOException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
