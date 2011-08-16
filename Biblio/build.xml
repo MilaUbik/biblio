@@ -102,6 +102,11 @@
         <copy todir="dist/data">
             <fileset file="dist/../data/tmpImage.jpg"></fileset>
         </copy>
+         <mkdir dir="dist/native" ></mkdir>
+          <mkdir dir="dist/native/linux" ></mkdir>
+        <copy todir="dist/native/linux">
+            <fileset dir="native/linux/"></fileset>
+        </copy>
     </target>
 
     <!--+
