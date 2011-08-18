@@ -49,7 +49,7 @@ public class ScannerView extends javax.swing.JFrame {
                 String tmpImage = (String) prop.getProperty("tmpImage");
                 URL imagePath = new File(path + File.separator + tmpImage).toURI().toURL();
                 icon = new ImageIcon(imagePath);
-                Image imageTmp = icon.getImage().getScaledInstance(jLabel2.getWidth()-10, jLabel2.getHeight()-10, Image.SCALE_DEFAULT);
+                Image imageTmp = icon.getImage().getScaledInstance(jLabel2.getWidth()-30, jLabel2.getHeight()-30, Image.SCALE_DEFAULT);
                 icon = new ImageIcon(imageTmp);
                
                 book = new Book();
@@ -98,13 +98,18 @@ public class ScannerView extends javax.swing.JFrame {
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(biblio.BiblioApp.class).getContext().getResourceMap(ScannerView.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), resourceMap.getString("jLabel1.border.title"))); // NOI18N
+        jLabel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jLabel1.border.title"))); // NOI18N
+        jLabel1.setMaximumSize(new java.awt.Dimension(300, 400));
+        jLabel1.setMinimumSize(new java.awt.Dimension(300, 400));
         jLabel1.setName("jLabel1"); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(300, 400));
 
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), resourceMap.getString("jLabel2.border.title"))); // NOI18N
+        jLabel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jLabel2.border.title"))); // NOI18N
+        jLabel2.setMaximumSize(new java.awt.Dimension(300, 400));
+        jLabel2.setMinimumSize(new java.awt.Dimension(300, 400));
         jLabel2.setName("jLabel2"); // NOI18N
+        jLabel2.setPreferredSize(new java.awt.Dimension(300, 400));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -147,9 +152,9 @@ public class ScannerView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(149, 149, 149)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 784, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -166,8 +171,8 @@ public class ScannerView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
@@ -185,7 +190,7 @@ public class ScannerView extends javax.swing.JFrame {
        int width = new Double(this.jLabel1.getPreferredSize().getWidth()).intValue();
        int height = new Double(this.jLabel1.getPreferredSize().getHeight()).intValue();
       // Image img = icon.getImage().getScaledInstance(width, height-90,Image.SCALE_DEFAULT);
-        this.jLabel1.setIcon(new ImageIcon(icon.getImage().getScaledInstance(width, height-90,Image.SCALE_DEFAULT)));
+        this.jLabel1.setIcon(new ImageIcon(icon.getImage().getScaledInstance(width-30, height-30,Image.SCALE_DEFAULT)));
     }
 
    public void setBook(Book book) {
@@ -196,7 +201,7 @@ public class ScannerView extends javax.swing.JFrame {
             this.jTextArea1.setText(this.book.toString());
             Image imageCover = ImageIO.read(new URL("file://" + new File(this.book.getCover().trim()).getAbsolutePath()));
             if (imageCover != null) {
-                ImageIcon imageIcon = new ImageIcon(imageCover.getScaledInstance(jLabel2.getWidth()-10, jLabel2.getHeight()-10, Image.SCALE_DEFAULT));
+                ImageIcon imageIcon = new ImageIcon(imageCover.getScaledInstance(jLabel2.getWidth()-30, jLabel2.getHeight()-30, Image.SCALE_DEFAULT));
                 this.jLabel2.setIcon(imageIcon);
             } else {
                 this.jLabel2.setIcon(this.icon);
